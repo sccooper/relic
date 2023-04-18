@@ -93,7 +93,7 @@ func verifyBlockMap(inz *zip.Reader, files zipFiles, skipDigests bool) error {
 	bm.Hash = hash
 	bmfiles := bm.File
 	for _, zf := range inz.File {
-		if noHashFiles[zf.Name] || (isBundle && strings.HasSuffix(zf.Name, ".appx")) {
+		if noHashFiles[zf.Name] || (isBundle && (strings.HasSuffix(zf.Name, ".appx") || strings.HasSuffix(zf.Name, ".msix"))) {
 			continue
 		}
 		if len(bmfiles) == 0 {
@@ -233,7 +233,7 @@ func (b *blockMap) AddFile(f *zipslicer.File, raw, cooked io.Writer) error {
 			return err
 		}
 	}
-	if !(noHashFiles[f.Name] || strings.HasSuffix(f.Name, ".appx")) {
+	if !(noHashFiles[f.Name] || strings.HasSuffix(f.Name, ".appx") || strings.HasSuffix(f.Name, ".msix")) {
 		if f.Method != zip.Store {
 			b.unverifiedSizes = true
 		}

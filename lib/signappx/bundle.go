@@ -69,7 +69,7 @@ func verifyBundle(r io.ReaderAt, files zipFiles, sig *AppxSignature, skipDigests
 		return fmt.Errorf("bundle manifest: publisher identity mismatch:\nexpected: %s\nactual: %s", publisher, bundle.Identity.Publisher)
 	}
 	for _, zf := range files {
-		if !strings.HasSuffix(zf.Name, ".appx") {
+		if !strings.HasSuffix(zf.Name, ".appx") && !strings.HasSuffix(zf.Name, ".msix") {
 			continue
 		}
 		if zf.Method != zip.Store {
